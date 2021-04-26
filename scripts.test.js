@@ -75,4 +75,14 @@ test('correctly registers missed attacks', () => {
             y: 4
         }
     ]);
+});
+
+test('correctly checks if ships have been sunk or not', () => {
+    let gameboard = new Gameboard();
+    gameboard.placeShip(5, 4, "h", 3);
+    expect(gameboard.allSunk()).toBe(false);
+    gameboard.receiveAttack(5, 4);
+    gameboard.receiveAttack(6, 4);
+    gameboard.receiveAttack(7, 4);
+    expect(gameboard.allSunk()).toBe(true);
 })

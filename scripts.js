@@ -92,6 +92,18 @@ function Gameboard() {
     this.miss = function(x, y) {
         this.missedAttacks.push({x, y});
     }
+
+    // Check if all ships have been sunk by going through the ships
+    // array
+    this.allSunk = function() {
+        return this.ships.every(element => {
+            if (element.ship.sunk) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+    }
 }
 
 module.exports = { Ship, Gameboard };
