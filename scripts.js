@@ -106,4 +106,13 @@ function Gameboard() {
     }
 }
 
-module.exports = { Ship, Gameboard };
+function Player(computer) {
+    // See whether or not the player is a computer
+    this.computer = computer;
+
+    if (this.computer) {
+        
+    }
+}
+
+module.exports = { Ship, Gameboard, Player };

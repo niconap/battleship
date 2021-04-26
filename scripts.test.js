@@ -1,4 +1,4 @@
-let { Ship, Gameboard } = require("./scripts");
+let { Ship, Gameboard, Player } = require("./scripts");
 
 test('correctly creates a hit array', () => {
     let ship = new Ship(5);
@@ -81,8 +81,8 @@ test('correctly checks if ships have been sunk or not', () => {
     let gameboard = new Gameboard();
     gameboard.placeShip(5, 4, "h", 3);
     expect(gameboard.allSunk()).toBe(false);
-    gameboard.receiveAttack(5, 4);
-    gameboard.receiveAttack(6, 4);
-    gameboard.receiveAttack(7, 4);
+    for (let i = 5; i < 8; i++) {
+        gameboard.receiveAttack(i, 4);
+    }
     expect(gameboard.allSunk()).toBe(true);
 })
