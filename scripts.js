@@ -17,11 +17,12 @@ function Ship(length) {
     // that spot has been hit
     this.hit = function(spot) {
         this.hitArray[spot] = true;
+        this.isSunk();
     }
 
     // See whether or not the ship has been sunk based on the hitArray
     this.isSunk = function() {
-        return this.hitArray.every(element => {
+        this.sunk = this.hitArray.every(element => {
             if (element) {
                 return true;
             } else {
@@ -69,14 +70,27 @@ function Gameboard() {
                 if (element.or == "v") {
                     if (element.y.includes(y)) {
                         element.ship.hit(element.y.indexOf(y));
+                    } else {
+                        this.miss(x, y);
+                        console.log("hi");
                     }
                 } else if (element.or == "h") {
                     if (element.x.includes(x)) {
                         element.ship.hit(element.x.indexOf(x));
+                    } else {
+                        this.miss(x, y);
                     }
                 }
+            } else {
+                this.miss(x, y);
             }
         })
+    }
+
+    // If an attack misses, register it by putting its coordinates
+    // in missedAttacks
+    this.miss = function(x, y) {
+        this.missedAttacks.push({x, y});
     }
 }
 

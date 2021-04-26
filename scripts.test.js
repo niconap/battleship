@@ -25,11 +25,12 @@ test('correctly hits the right spots in a ship', () => {
 
 test('correctly calculates whether or not a ship has been sunk', () => {
     let ship = new Ship(5);
-    expect(ship.isSunk()).toBe(false);
+    ship.isSunk();
+    expect(ship.sunk).toBe(false);
     for (let i = 0; i < ship.length; i++) {
         ship.hit(i);
     }
-    expect(ship.isSunk()).toBe(true);
+    expect(ship.sunk).toBe(true);
 });
 
 test.skip('correctly adds ships to the ship array', () => {
@@ -63,3 +64,15 @@ test('correctly handles an attack that hits a ship', () => {
         false, true, false
     ]);
 });
+
+test('correctly registers missed attacks', () => {
+    let gameboard = new Gameboard();
+    gameboard.placeShip(5, 4, "v", 5);
+    gameboard.receiveAttack(6, 4);
+    expect(gameboard.missedAttacks).toStrictEqual([
+        {
+            x: 6,
+            y: 4
+        }
+    ]);
+})
