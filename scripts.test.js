@@ -86,3 +86,34 @@ test('correctly checks if ships have been sunk or not', () => {
     }
     expect(gameboard.allSunk()).toBe(true);
 })
+
+test('correctly registers an attack', () => {
+    let computerBoard = new Gameboard();
+    computerBoard.placeShip(0, 0, "v", 5);
+    let computer = new Player(true, computerBoard);
+    computer.attack(5, 6);
+    expect(computerBoard.missedAttacks).toStrictEqual([
+        {
+            x: 5, 
+            y: 6
+        }
+    ]);
+    expect(computer.alreadyHit).toStrictEqual([
+        {
+            x: 5,
+            y: 6
+        }
+    ]);
+});
+
+test('correctly checks if coordinates have already been hit', () => {
+    let computerBoard = new Gameboard();
+    computerBoard.placeShip(0, 0, "v", 5);
+    let computer = new Player(true, computerBoard);
+    computer.attack(5, 6);
+    computer.attack(6, 6);
+    expect(computer.checkHit(5, 6)).toBe(true);
+    expect(computer.checkHit(6, 6)).toBe(true);
+    expect(computer.checkHit(0, 0)).toBe(false);
+    expect(computer.checkHit(1, 0)).toBe(false);
+});

@@ -106,12 +106,42 @@ function Gameboard() {
     }
 }
 
-function Player(computer) {
+function Player(computer,target) {
     // See whether or not the player is a computer
     this.computer = computer;
 
     if (this.computer) {
-        
+        this.alreadyHit = [];
+
+        // Send an attack to the gameboard by receiving coordinates
+        this.attack = function(x, y) {
+            target.receiveAttack(x, y);
+            this.alreadyHit.push({ x, y });
+        }
+
+        // Check if coordinates are in the alreadyHit array
+        this.checkHit = function(x, y) {
+            return this.alreadyHit.some(element => {
+                return element.x == x && element.y == y;
+            });
+        }
+
+        // Creates two random coordinates to hit, but checks that the
+        // coordinates are not in alreadyHit
+        this.createCoords = function() {
+            let x = Math.floor(Math.random() * 9);
+            let y = Math.floor(Math.random() * 9);
+            if (!this.checkHit(x, y)) {
+                this.attack(x, y);
+            } else {
+                this.createCoords();
+                return;
+            }
+        }
+    } else {
+        this.attack = function(x, y) {
+            target.receiveAttack(x, y);
+        }
     }
 }
 
