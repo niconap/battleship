@@ -106,7 +106,6 @@ function Gameboard() {
             element.ship.hit(element.y.indexOf(y));
           } else {
             this.miss(x, y);
-            console.log("hi");
           }
         } else if (element.or == "h") {
           if (element.x.includes(x)) {
@@ -177,45 +176,85 @@ function Player(computer,target) {
         return;
       }
     }
+
+    // Possible lengths and orientations
+    let shipLengths = [2, 3, 3, 4, 5];
+    let orientations = ["v", "h"];
+
+    // Fisher-Yates algorithm (randomizes array)
+    for (var i = shipLengths.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = shipLengths[i];
+      shipLengths[i] = shipLengths[j];
+      shipLengths[j] = temp;
+    }
+
+      // Create arrays of possible coordinates
+    shipLengths.forEach(element => {
+      let spots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];        
+      let possibleX = [];
+      let possibleY = [];
+      let x;
+      let y;
+      let orientation = orientations[(Math.random() >= 0.5) ? 1 : 0];
+
+      function createShipCoords() {
+        if (orientation == "v") {
+          possibleX = spots;
+          possibleY = spots.slice(0, 11 - element);
+        } else if (orientation == "h") {
+          possibleY = spots;
+          possibleX = spots.slice(0, 11 - element);
+        }
+        x = possibleX[Math.floor(Math.random() * possibleX.length)];
+        y = possibleY[Math.floor(Math.random() * possibleY.length)];
+        
+        let backupX = x;
+        let backupY = y;
+
+        // Creates an array for one of the two coordinates
+        if (orientation == "v") {
+          let yco = y;
+          y = [];
+          for (let i = yco; i < yco + element; i++) {
+            y.push(i);
+          }
+        } else if (orientation == "h") {
+          let xco = x;
+          x = [];
+          for (let i = xco; i < xco + element; i++) {
+            x.push(i);
+          }
+        }
+
+        if (computerBoard.checkBoard(x, y, orientation, element)) {
+          createShipCoords();
+          return;
+        } else {
+          computerBoard.placeShip(backupX, backupY, orientation, element);
+        }
+      }
+      createShipCoords();
+    })
   } else {
     this.attack = function(x, y) {
       target.receiveAttack(x, y);
     }
   }
+
+
 }
+
+let computerBoard;
+let playerBoard;
 
 function gameloop() {
-  let playerBoard = new Gameboard();
-  let computerBoard = new Gameboard();
+  playerBoard = new Gameboard();
+  computerBoard = new Gameboard();
   let player = new Player(false, computerBoard);
   let computer = new Player(true, playerBoard);
-
-  // Randomly place 5 ships for the computer 
-  let shipLengths = [2, 3, 3, 4, 5];
-  let orientations = ["v", "h"];
-
-  // Fisher-Yates algorithm (randomizes array)
-  for (var i = shipLengths.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = shipLengths[i];
-    shipLengths[i] = shipLengths[j];
-    shipLengths[j] = temp;
-  }
-
-  // Create arrays of possible coordinates
-  shipLengths.forEach(element => {
-    let spots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    let orientation = orientations[(Math.random() >= 0.5) ? 1 : 0];
-    let x = [];
-    let y = [];
-    if (orientation == "v") {
-      x = spots;
-      y = spots.slice(0, 11 - element);
-    } else if (orientation == "h") {
-      y = spots;
-      x = spots.slice(0, 11 - element);
-    }
-  })
 }
+
+gameloop();
 
 module.exports = { Ship, Gameboard, Player };
