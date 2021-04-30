@@ -1,0 +1,15 @@
+* {
+    margin: auto;
+    outline: none;
+  }
+  
+  #playerboard, #computerboard {
+    margin-left: 50px; 
+    display: inline-grid;
+    width: 30em;
+    height: 30em;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    border: 1px solid lightgray;
+    margin-top: 100px;
+  }
