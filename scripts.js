@@ -141,6 +141,47 @@ function Gameboard() {
   // Render the gameboard
   this.render = function(name) {
     let container = document.getElementById(name);
+    let x = 0;
+    let y = 0;
+    for (let i = 0; i < 100; i++){
+      let box = document.createElement("div");
+      box.classList.add("tile");
+      container.appendChild(box);
+
+      // Check if the x and y are occupied by a ship, if yes: give the
+      // tile a ship class
+      this.ships.forEach(ship => {
+        if (ship.or == "v") {
+          if (ship.x == x) {
+            if (ship.y.indexOf(y) >= 0) {
+              box.classList.add("ship");
+            } else {
+              return;
+            }
+          } else {
+            return;
+          }
+        } else if (ship.or == "h") {
+          if (ship.y == y) {
+            if (ship.x.indexOf(x) >= 0) {
+              box.classList.add("ship");
+            } else {
+              return;
+            }
+          } else {
+            return;
+          }
+        }
+      });
+
+      if (x != 9) {
+        x++;
+      } else {
+        x = 0;
+        y++
+      }
+
+    }
   }
 }
 
@@ -241,8 +282,6 @@ function Player(computer,target) {
       target.receiveAttack(x, y);
     }
   }
-
-
 }
 
 let computerBoard;
@@ -253,6 +292,9 @@ function gameloop() {
   computerBoard = new Gameboard();
   let player = new Player(false, computerBoard);
   let computer = new Player(true, playerBoard);
+  playerBoard.placeShip(0, 0, "v", 5);
+  playerBoard.render("playerboard");
+  computerBoard.render("computerboard");
 }
 
 gameloop();
