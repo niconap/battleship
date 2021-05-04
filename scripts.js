@@ -141,12 +141,15 @@ function Gameboard() {
   // Render the gameboard
   this.render = function(name) {
     let container = document.getElementById(name);
+    container.innerHTML = "";
     let x = 0;
     let y = 0;
     for (let i = 0; i < 100; i++){
       let box = document.createElement("div");
       box.classList.add("tile");
-      container.appendChild(box);
+      let isShip = false;
+      let attackX = x;
+      let attackY = y;
 
       // Check if the x and y are occupied by a ship, if yes: give the
       // tile a ship class
@@ -155,6 +158,7 @@ function Gameboard() {
           if (ship.x == x) {
             if (ship.y.indexOf(y) >= 0) {
               box.classList.add("ship");
+              isShip = true;
             } else {
               return;
             }
@@ -165,6 +169,7 @@ function Gameboard() {
           if (ship.y == y) {
             if (ship.x.indexOf(x) >= 0) {
               box.classList.add("ship");
+              isShip = true;
             } else {
               return;
             }
@@ -173,6 +178,20 @@ function Gameboard() {
           }
         }
       });
+      
+      if (name == "computerboard") {
+        box.addEventListener('click', () => {
+          player.attack(attackX, attackY);
+          box.classList.add("hit");
+          if (this.allSunk()) {
+            container.innerHTML = "All ships sunk";
+          }
+        }, {
+          once: true,
+        })
+      }
+      
+      container.appendChild(box);
 
       if (x != 9) {
         x++;
@@ -285,13 +304,13 @@ function Player(computer,target) {
 }
 
 let computerBoard;
-let playerBoard;
+let playerBoard;  
+playerBoard = new Gameboard();
+computerBoard = new Gameboard();
+let player = new Player(false, computerBoard);
+let computer = new Player(true, playerBoard);
 
 function gameloop() {
-  playerBoard = new Gameboard();
-  computerBoard = new Gameboard();
-  let player = new Player(false, computerBoard);
-  let computer = new Player(true, playerBoard);
   playerBoard.placeShip(0, 0, "v", 5);
   playerBoard.render("playerboard");
   computerBoard.render("computerboard");
