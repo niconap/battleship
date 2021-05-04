@@ -179,20 +179,24 @@ function Gameboard() {
         }
       });
       
+      // Add an eventlistener that only fires once
+      let clicked = false;
       if (name == "computerboard") {
         box.addEventListener('click', () => {
-          player.attack(attackX, attackY);
-          box.classList.add("hit");
-          if (this.allSunk()) {
-            container.innerHTML = "All ships sunk";
+          if (current && !clicked) {
+            player.attack(attackX, attackY);
+            box.classList.add("hit");
+            if (this.allSunk()) {
+              container.innerHTML = "All ships sunk";
+            }
+            clicked = true;
           }
-        }, {
-          once: true,
         })
       }
       
       container.appendChild(box);
 
+      // Change the x and y to match the next box
       if (x != 9) {
         x++;
       } else {
@@ -305,6 +309,7 @@ function Player(computer,target) {
 
 let computerBoard;
 let playerBoard;  
+let current = true;
 playerBoard = new Gameboard();
 computerBoard = new Gameboard();
 let player = new Player(false, computerBoard);
