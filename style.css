@@ -20,14 +20,15 @@
   border: solid 1px black;
 }
 
-.hit.ship.tile {
+.hit.ship.tile, #playerboard .hit.ship.tile {
   background-color: green;
 }
 
-.hit.tile {
+.hit.tile, .miss {
   background-color: red;
 }
 
 #playerboard .ship {
   background-color: blue;
 }
+

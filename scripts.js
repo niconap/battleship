@@ -159,6 +159,15 @@ function Gameboard() {
             if (ship.y.indexOf(y) >= 0) {
               box.classList.add("ship");
               isShip = true;
+              if (name == "playerboard") {
+                let index = 0;
+                ship.ship.hitArray.forEach(element => {
+                  if (element && ship.y[index] == y) {
+                    box.classList.add("hit");
+                  }
+                  index++;
+                })
+              }
             } else {
               return;
             }
@@ -170,6 +179,15 @@ function Gameboard() {
             if (ship.x.indexOf(x) >= 0) {
               box.classList.add("ship");
               isShip = true;
+              if (name == "playerboard") {
+                let index = 0;
+                ship.ship.hitArray.forEach(element => {
+                  if (element && ship.x[index] == x) {
+                    box.classList.add("hit");
+                  }
+                  index++;
+                })
+              }
             } else {
               return;
             }
@@ -178,6 +196,15 @@ function Gameboard() {
           }
         }
       });
+
+      // Check if the tile has been missed and if it's been hit
+      if (name == "playerboard") {
+        this.missedAttacks.forEach(coord => {
+          if (coord.x == x && coord.y == y) {
+            box.classList.add("miss");
+          }
+        })
+      }
       
       // Add an eventlistener that only fires once
       let clicked = false;
@@ -186,14 +213,18 @@ function Gameboard() {
           if (current && !clicked) {
             player.attack(attackX, attackY);
             box.classList.add("hit");
-            if (this.allSunk()) {
-              container.innerHTML = "All ships sunk";
-            }
             clicked = true;
+            current = false;
+            gameloop();
           }
         })
       }
       
+      if (this.allSunk()) {
+        container.innerHTML = "All ships sunk";
+        return;
+      }
+
       container.appendChild(box);
 
       // Change the x and y to match the next box
@@ -219,6 +250,7 @@ function Player(computer,target) {
     this.attack = function(x, y) {
       target.receiveAttack(x, y);
       this.alreadyHit.push({ x, y });
+      playerBoard.render("playerboard");
     }
 
     // Check if coordinates are in the alreadyHit array
@@ -307,6 +339,7 @@ function Player(computer,target) {
   }
 }
 
+// Initialization
 let computerBoard;
 let playerBoard;  
 let current = true;
@@ -314,11 +347,17 @@ playerBoard = new Gameboard();
 computerBoard = new Gameboard();
 let player = new Player(false, computerBoard);
 let computer = new Player(true, playerBoard);
+playerBoard.placeShip(0, 0, "v", 5);
+playerBoard.render("playerboard");
+computerBoard.render("computerboard");
 
 function gameloop() {
-  playerBoard.placeShip(0, 0, "v", 5);
-  playerBoard.render("playerboard");
-  computerBoard.render("computerboard");
+  if (current) {
+    return;
+  } else {
+    computer.createCoords();
+    current = true;
+  }
 }
 
 gameloop();
