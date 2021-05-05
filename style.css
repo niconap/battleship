@@ -17,18 +17,27 @@
 .tile {
   width: 100%;
   height: 100%;
-  border: solid 1px black;
 }
 
 .hit.ship.tile, #playerboard .hit.ship.tile {
-  background-color: green;
+  background-image: url(hit.png);
+  background-size: cover;
 }
 
-.hit.tile, .miss {
-  background-color: red;
+.miss.tile, .hit.tile {
+  background-image: url(./miss.png);
 }
 
 #playerboard .ship {
-  background-color: blue;
+  background-image: url(./ship.png);
 }
 
+.tile {
+  background-image: url(./texture.png);
+  background-size: cover;
+  transition: background 0.2s ease;
+}
+
+.tile:hover {
+  background: lightgray;
+}
