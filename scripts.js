@@ -226,10 +226,11 @@ function Gameboard() {
         let restart = document.createElement('button');
         restart.addEventListener('click', () => {
           initialize();
-          container.removeChild(restart);
+          boards.removeChild(restart);
         });
+        restart.id = "restart";
         restart.innerHTML = "Restart";
-        container.appendChild(restart);
+        boards.appendChild(restart);
         return;
       }
 
