@@ -221,7 +221,15 @@ function Gameboard() {
       }
       
       if (this.allSunk()) {
-        container.innerHTML = "All ships sunk";
+        let boards = document.getElementById("container");
+        boards.innerHTML = "<div id=\"playerboard\" class=\"board\"></div><div id=\"computerboard\" class=\"board\"></div>";
+        let restart = document.createElement('button');
+        restart.addEventListener('click', () => {
+          initialize();
+          container.removeChild(restart);
+        });
+        restart.innerHTML = "Restart";
+        container.appendChild(restart);
         return;
       }
 
@@ -342,14 +350,20 @@ function Player(computer,target) {
 // Initialization
 let computerBoard;
 let playerBoard;  
-let current = true;
-playerBoard = new Gameboard();
-computerBoard = new Gameboard();
-let player = new Player(false, computerBoard);
-let computer = new Player(true, playerBoard);
-playerBoard.placeShip(0, 0, "v", 5);
-playerBoard.render("playerboard");
-computerBoard.render("computerboard");
+let current;
+let player;
+let computer;
+
+function initialize() {
+  current = true;
+  playerBoard = new Gameboard();
+  computerBoard = new Gameboard();
+  player = new Player(false, computerBoard);
+  computer = new Player(true, playerBoard);
+  playerBoard.placeShip(0, 0, "v", 5);
+  playerBoard.render("playerboard");
+  computerBoard.render("computerboard");
+}
 
 function gameloop() {
   if (current) {
@@ -360,6 +374,7 @@ function gameloop() {
   }
 }
 
+initialize();
 gameloop();
 
 module.exports = { Ship, Gameboard, Player };
