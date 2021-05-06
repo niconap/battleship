@@ -417,7 +417,7 @@ function drop(e, x, y) {
     }
   }
 
-  if (!playerBoard.checkBoard(x, y, orientation, data)) {;
+  if (!playerBoard.checkBoard(x, y, orientation, data) && checkPossibleCoords(xco, yco, orientation, data)) {;
     playerBoard.placeShip(xco, yco, orientation, parseInt(data));
     playerBoard.render("playerboard");
     let template = document.getElementById(e.dataTransfer.getData("id"));
@@ -432,6 +432,29 @@ function startButton() {
     let menu = document.getElementById("menu");
     let container = document.querySelector("body");
     container.removeChild(menu);
+  }
+}
+
+function checkPossibleCoords(x, y, or, length) {
+  let spots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];        
+  let possibleX = [];
+  let possibleY = [];
+  if (or == "v") {
+    possibleX = spots;
+    possibleY = spots.slice(0, 11 - length);
+    if (possibleY.indexOf(y) < 0) {
+      return false;
+    } else {
+      return true;
+    }
+  } else if (or == "h") {
+    possibleY = spots;
+    possibleX = spots.slice(0, 11 - length);
+    if (possibleX.indexOf(x) < 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
