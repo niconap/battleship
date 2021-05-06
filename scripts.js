@@ -215,7 +215,7 @@ function Gameboard() {
       let clicked = false;
       if (name == "computerboard") {
         box.addEventListener('click', () => {
-          if (current && !clicked) {
+          if (current && started && !clicked) {
             player.attack(attackX, attackY);
             box.classList.add("hit");
             clicked = true;
@@ -355,13 +355,13 @@ function Player(computer,target) {
 
 // Initialization
 let computerBoard;
-let playerBoard;  
-let current;
+let playerBoard;
 let player;
+let current;
+let started = false;
 let computer;
 
 function initialize() {
-  current = true;
   playerBoard = new Gameboard();
   computerBoard = new Gameboard();
   player = new Player(false, computerBoard);
@@ -400,6 +400,15 @@ function drop(e, x, y) {
   let template = document.getElementById(e.dataTransfer.getData("id"));
   let container = document.querySelector("body");
   container.removeChild(template);
+}
+
+function startButton() {
+  if (document.querySelectorAll(".template").length < 1) {
+    started = true;
+    let button = document.getElementById("start");
+    let container = document.querySelector("body");
+    container.removeChild(button);
+  }
 }
 
 initialize();
