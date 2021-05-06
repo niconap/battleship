@@ -41,7 +41,6 @@ function Gameboard() {
 
   // Make an object with a Ship(), coordinates and orientation
   this.placeShip = function(x, y, or, length) {
-    console.log(length);
     if (or == "v") {
       let yco = y;
       y = [];
@@ -403,11 +402,28 @@ function drop(e, x, y) {
   e.preventDefault();
   let orientation = e.dataTransfer.getData("orientation");
   let data = e.dataTransfer.getData("number");
-  playerBoard.placeShip(x, y, orientation, parseInt(data));
-  playerBoard.render("playerboard");
-  let template = document.getElementById(e.dataTransfer.getData("id"));
-  let container = document.querySelector("body");
-  container.removeChild(template);
+  let xco = x;
+  let yco = y;
+
+  if (orientation == "v") {
+    y = [];
+    for (let i = yco; i < yco + parseInt(data); i++) {
+      y.push(i);
+    }
+  } else if (orientation == "h") {
+    x = [];
+    for (let i = xco; i < xco + parseInt(data); i++) {
+      x.push(i);
+    }
+  }
+
+  if (!playerBoard.checkBoard(x, y, orientation, data)) {;
+    playerBoard.placeShip(xco, yco, orientation, parseInt(data));
+    playerBoard.render("playerboard");
+    let template = document.getElementById(e.dataTransfer.getData("id"));
+    let container = document.querySelector("body");
+    container.removeChild(template);
+  }
 }
 
 function startButton() {
