@@ -12,12 +12,16 @@
         <div class="board" id="playerboard"></div>
         <div class="board" id="computerboard"></div>
     </div>
-    <div class="template" id="ship5" draggable="true" ondragstart="drag(event, 5, 'v')"></div>
-    <div class="template" id="ship4" draggable="true" ondragstart="drag(event, 4, 'v')"></div>
-    <div class="template" id="ship3" draggable="true" ondragstart="drag(event, 3, 'v')"></div>
-    <div class="template" id="ship21" draggable="true" ondragstart="drag(event, 2, 'v')"></div>
-    <div class="template" id="ship22" draggable="true" ondragstart="drag(event, 2, 'v')"></div>
+    <div class="template" id="ship5" draggable="true" ondragstart="drag(event, 5)"></div>
+    <div class="template" id="ship4" draggable="true" ondragstart="drag(event, 4)"></div>
+    <div class="template" id="ship3" draggable="true" ondragstart="drag(event, 3)"></div>
+    <div class="template" id="ship21" draggable="true" ondragstart="drag(event, 2)"></div>
+    <div class="template" id="ship22" draggable="true" ondragstart="drag(event, 2)"></div>
     <button id="start" onclick="startButton()">Start</button>
+    <input type="radio" id="vertical" name="orientation" value="v" checked="checked">
+    <label for="vertical">Vertical</label>
+    <input type="radio" id="horizontal" name="orientation" value="h">
+    <label for="horizontal">Horizontal</label>
     <script src="./scripts.js"></script>
 </body>
 </html>

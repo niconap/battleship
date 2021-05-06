@@ -381,9 +381,17 @@ function gameloop() {
   }
 }
 
-function drag(e, length, or) {
+function drag(e, length) {
   e.dataTransfer.setData("number", length);
-  e.dataTransfer.setData("orientation", or)
+  let vertical = document.getElementById("vertical");
+  let horizontal = document.getElementById("horizontal");
+  let orientation;
+  if (vertical.checked) {
+    orientation = "v";
+  } else if (horizontal.checked) {
+    orientation = "h";
+  }
+  e.dataTransfer.setData("orientation", orientation)
   e.dataTransfer.setData("id", e.target.id);
 }
 
