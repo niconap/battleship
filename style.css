@@ -20,24 +20,59 @@
 }
 
 .hit.ship.tile, #playerboard .hit.ship.tile {
-  background-image: url(hit.png);
+  background: url(hit.png);
   background-size: cover;
 }
 
 .miss.tile, .hit.tile {
-  background-image: url(./miss.png);
+  background: url(./miss.png);
+  background-size: cover;
 }
 
 #playerboard .ship {
-  background-image: url(./ship.png);
+  background: url(./ship.png);
+  background-size: cover;
 }
 
 .tile {
-  background-image: url(./texture.png);
+  background: url(./texture.png);
   background-size: cover;
   transition: background 0.2s ease;
 }
 
-.tile:hover {
+#computerboard .tile:hover {
   background: lightgray;
+}
+
+#ship5 {
+  width: calc(30em / 10);
+  height: calc(30em / 10 * 5);
+  background: url(./ship.png);
+  background-size: calc(30em / 10);
+}
+
+#ship4 {
+  width: calc(30em / 10);
+  height: calc(30em / 10 * 4);
+  background: url(./ship.png);
+  background-size: calc(30em / 10);
+}
+
+#ship3 {
+  width: calc(30em / 10);
+  height: calc(30em / 10 * 3);
+  background: url(./ship.png);
+  background-size: calc(30em / 10);
+}
+
+#ship21, #ship22 {
+  width: calc(30em / 10);
+  height: calc(30em / 10 * 2);
+  background: url(./ship.png);
+  background-size: calc(30em / 10);
+}
+
+.template {
+  display: inline-block;
+  margin-left: 50px;
 }

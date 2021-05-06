@@ -41,6 +41,7 @@ function Gameboard() {
 
   // Make an object with a Ship(), coordinates and orientation
   this.placeShip = function(x, y, or, length) {
+    console.log(length);
     if (or == "v") {
       let yco = y;
       y = [];
@@ -153,49 +154,51 @@ function Gameboard() {
 
       // Check if the x and y are occupied by a ship, if yes: give the
       // tile a ship class
-      this.ships.forEach(ship => {
-        if (ship.or == "v") {
-          if (ship.x == x) {
-            if (ship.y.indexOf(y) >= 0) {
-              box.classList.add("ship");
-              isShip = true;
-              if (name == "playerboard") {
-                let index = 0;
-                ship.ship.hitArray.forEach(element => {
-                  if (element && ship.y[index] == y) {
-                    box.classList.add("hit");
-                  }
-                  index++;
-                })
+      if (this.ships.length > 0) {
+        this.ships.forEach(ship => {
+          if (ship.or == "v") {
+            if (ship.x == x) {
+              if (ship.y.indexOf(y) >= 0) {
+                box.classList.add("ship");
+                isShip = true;
+                if (name == "playerboard") {
+                  let index = 0;
+                  ship.ship.hitArray.forEach(element => {
+                    if (element && ship.y[index] == y) {
+                      box.classList.add("hit");
+                    }
+                    index++;
+                  })
+                }
+              } else {
+                return;
               }
             } else {
               return;
             }
-          } else {
-            return;
-          }
-        } else if (ship.or == "h") {
-          if (ship.y == y) {
-            if (ship.x.indexOf(x) >= 0) {
-              box.classList.add("ship");
-              isShip = true;
-              if (name == "playerboard") {
-                let index = 0;
-                ship.ship.hitArray.forEach(element => {
-                  if (element && ship.x[index] == x) {
-                    box.classList.add("hit");
-                  }
-                  index++;
-                })
+          } else if (ship.or == "h") {
+            if (ship.y == y) {
+              if (ship.x.indexOf(x) >= 0) {
+                box.classList.add("ship");
+                isShip = true;
+                if (name == "playerboard") {
+                  let index = 0;
+                  ship.ship.hitArray.forEach(element => {
+                    if (element && ship.x[index] == x) {
+                      box.classList.add("hit");
+                    }
+                    index++;
+                  })
+                }
+              } else {
+                return;
               }
             } else {
               return;
             }
-          } else {
-            return;
           }
-        }
-      });
+        });
+      }
 
       // Check if the tile has been missed and if it's been hit
       if (name == "playerboard") {
@@ -204,8 +207,10 @@ function Gameboard() {
             box.classList.add("miss");
           }
         })
+        box.setAttribute('ondrop', `drop(event, ${x}, ${y})`);
+        box.setAttribute('ondragover', `allowDrop(event)`);
       }
-      
+
       // Add an eventlistener that only fires once
       let clicked = false;
       if (name == "computerboard") {
@@ -220,7 +225,7 @@ function Gameboard() {
         })
       }
       
-      if (this.allSunk()) {
+      if (this.allSunk() && this.ships.length > 0) {
         let boards = document.getElementById("container");
         boards.innerHTML = "<div id=\"playerboard\" class=\"board\"></div><div id=\"computerboard\" class=\"board\"></div>";
         let restart = document.createElement('button');
@@ -361,7 +366,6 @@ function initialize() {
   computerBoard = new Gameboard();
   player = new Player(false, computerBoard);
   computer = new Player(true, playerBoard);
-  playerBoard.placeShip(0, 0, "v", 5);
   playerBoard.render("playerboard");
   computerBoard.render("computerboard");
 }
@@ -370,9 +374,32 @@ function gameloop() {
   if (current) {
     return;
   } else {
-    computer.createCoords();
-    current = true;
+    setTimeout(() => {
+      computer.createCoords();
+      current = true;
+    }, 600)
   }
+}
+
+function drag(e, length, or) {
+  e.dataTransfer.setData("number", length);
+  e.dataTransfer.setData("orientation", or)
+  e.dataTransfer.setData("id", e.target.id);
+}
+
+function allowDrop(e) {
+  e.preventDefault();
+}
+
+function drop(e, x, y) {
+  e.preventDefault();
+  let orientation = e.dataTransfer.getData("orientation");
+  let data = e.dataTransfer.getData("number");
+  playerBoard.placeShip(x, y, orientation, parseInt(data));
+  playerBoard.render("playerboard");
+  let template = document.getElementById(e.dataTransfer.getData("id"));
+  let container = document.querySelector("body");
+  container.removeChild(template);
 }
 
 initialize();
