@@ -413,9 +413,9 @@ function drop(e, x, y) {
 function startButton() {
   if (document.querySelectorAll(".template").length < 1) {
     started = true;
-    let button = document.getElementById("start");
+    let menu = document.getElementById("menu");
     let container = document.querySelector("body");
-    container.removeChild(button);
+    container.removeChild(menu);
   }
 }
 
