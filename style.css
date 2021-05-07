@@ -29,7 +29,7 @@
   background-size: cover;
 }
 
-#playerboard .ship {
+#playerboard .tile.ship {
   background: url(./ship.png);
   background-size: cover;
 }
@@ -58,14 +58,14 @@
   background-size: calc(30em / 10);
 }
 
-#ship3 {
+#ship31, #ship32 {
   width: calc(30em / 10);
   height: calc(30em / 10 * 3);
   background: url(./ship.png);
   background-size: calc(30em / 10);
 }
 
-#ship21, #ship22 {
+#ship2 {
   width: calc(30em / 10);
   height: calc(30em / 10 * 2);
   background: url(./ship.png);

@@ -219,27 +219,31 @@ function Gameboard() {
             box.classList.add("hit");
             clicked = true;
             current = false;
+            checkSunk();
             gameloop();
           }
         })
       }
       
-      if (this.allSunk() && this.ships.length > 0) {
-        let boards = document.getElementById("container");
-        boards.innerHTML = "<div id=\"playerboard\" class=\"board\"></div><div id=\"computerboard\" class=\"board\"></div>";
-        let restart = document.createElement('button');
-        restart.addEventListener('click', () => {
-          initialize();
-          boards.removeChild(restart);
-        });
-        restart.id = "restart";
-        restart.innerHTML = "Restart";
-        boards.appendChild(restart);
-        return;
+      let obj = this;
+      function checkSunk() {
+        if (obj.allSunk() && obj.ships.length > 0) {
+          let boards = document.getElementById("container");
+          boards.innerHTML = "<div id=\"playerboard\" class=\"board\"></div><div id=\"computerboard\" class=\"board\"></div>";
+          let restart = document.createElement('button');
+          restart.addEventListener('click', () => {
+            initialize();
+            boards.removeChild(restart);
+          });
+          restart.id = "restart";
+          restart.innerHTML = "Restart";
+          boards.appendChild(restart);
+          gameover = true;
+          return true;
+        }
       }
-
       container.appendChild(box);
-
+      
       // Change the x and y to match the next box
       if (x != 9) {
         x++;
@@ -357,12 +361,24 @@ let computerBoard;
 let playerBoard;
 let player;
 let current;
-let started = false;
+let started;
 let computer;
+let gameover;
 
 function initialize() {
+  started = false;
+  gameover = false;
   playerBoard = new Gameboard();
   computerBoard = new Gameboard();
+  let body = document.querySelector("body");
+  let choices = document.createElement("div");
+  choices.id = "choices";
+  choices.innerHTML = "<div class=\"template\" id=\"ship5\" draggable=\"true\" ondragstart=\"drag(event, 5)\"></div><div class=\"template\" id=\"ship4\" draggable=\"true\" ondragstart=\"drag(event, 4)\"></div><div class=\"template\" id=\"ship31\" draggable=\"true\" ondragstart=\"drag(event, 3)\"></div><div class=\"template\" id=\"ship32\" draggable=\"true\" ondragstart=\"drag(event, 3)\"></div><div class=\"template\" id=\"ship2\" draggable=\"true\" ondragstart=\"drag(event, 2)\"></div>";
+  body.appendChild(choices);
+  let menu = document.createElement("div");
+  menu.id = "menu";
+  menu.innerHTML = "<input type=\"radio\" id=\"vertical\" name=\"orientation\" value=\"v\" checked=\"checked\"><label for=\"vertical\">Vertical</label><input type=\"radio\" id=\"horizontal\" name=\"orientation\" value=\"h\"><label for=\"horizontal\">Horizontal</label><button id=\"start\" onclick=\"startButton()\">Start</button>";
+  body.appendChild(menu);
   player = new Player(false, computerBoard);
   computer = new Player(true, playerBoard);
   playerBoard.render("playerboard");
@@ -370,13 +386,15 @@ function initialize() {
 }
 
 function gameloop() {
-  if (current) {
-    return;
-  } else {
-    setTimeout(() => {
-      computer.createCoords();
-      current = true;
-    }, 600)
+  if (!gameover) {
+    if (current) {
+      return;
+    } else {
+      setTimeout(() => {
+        computer.createCoords();
+        current = true;
+      }, 600)
+    }
   }
 }
 
@@ -421,7 +439,7 @@ function drop(e, x, y) {
     playerBoard.placeShip(xco, yco, orientation, parseInt(data));
     playerBoard.render("playerboard");
     let template = document.getElementById(e.dataTransfer.getData("id"));
-    let container = document.querySelector("body");
+    let container = document.getElementById("choices");
     container.removeChild(template);
   }
 }
