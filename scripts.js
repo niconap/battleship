@@ -308,7 +308,7 @@ function Player(computer,target) {
       shipLengths[j] = temp;
     }
 
-      // Create arrays of possible coordinates
+    // Create arrays of possible coordinates
     shipLengths.forEach(element => {
       let spots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];        
       let possibleX = [];
