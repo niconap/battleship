@@ -9,3 +9,5 @@ The textures are all made by me using [Piskel](https://www.piskelapp.com/) and a
 The font I used is [Girassol](https://fonts.google.com/specimen/Girassol) by Liam Spradlin.
 
 Everything has been coded in vanilla JavaScript!
+
+View the live version by clicking [here](https://niconap.github.io/battleship/).
