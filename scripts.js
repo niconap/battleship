@@ -229,15 +229,21 @@ function Gameboard() {
       function checkSunk() {
         if (obj.allSunk() && obj.ships.length > 0) {
           let boards = document.getElementById("container");
-          boards.innerHTML = "<div id=\"playerboard\" class=\"board\"></div><div id=\"computerboard\" class=\"board\"></div>";
+          let menuwrapper = document.getElementById("menuwrapper");
           let restart = document.createElement('button');
           restart.addEventListener('click', () => {
+            boards.innerHTML = "<div class=\"duo\"><h1>Your board</h1><div class=\"board\" id=\"playerboard\"></div></div><div class=\"duo\"><h1>Computer's board</h1><div class=\"board\" id=\"computerboard\"></div></div>";
             initialize();
-            boards.removeChild(restart);
+            menuwrapper.removeChild(restart);
           });
           restart.id = "restart";
           restart.innerHTML = "Restart";
-          boards.appendChild(restart);
+          if (current) {
+          menuwrapper.innerHTML = "<h2>The computer has won!</h2>";
+          } else {
+            menuwrapper.innerHTML = "<h2>You have won!</h2>"
+          }
+          menuwrapper.appendChild(restart);
           gameover = true;
           return true;
         }
@@ -280,8 +286,8 @@ function Player(computer,target) {
     // Creates two random coordinates to hit, but checks that the
     // coordinates are not in alreadyHit
     this.createCoords = function() {
-      let x = Math.floor(Math.random() * 9);
-      let y = Math.floor(Math.random() * 9);
+      let x = Math.floor(Math.random() * 10);
+      let y = Math.floor(Math.random() * 10);
       if (!this.checkHit(x, y)) {
         this.attack(x, y);
       } else {
@@ -370,15 +376,16 @@ function initialize() {
   gameover = false;
   playerBoard = new Gameboard();
   computerBoard = new Gameboard();
-  let body = document.querySelector("body");
+  let menuwrapper = document.getElementById("menuwrapper");
+  menuwrapper.innerHTML = "";
   let choices = document.createElement("div");
   choices.id = "choices";
   choices.innerHTML = "<div class=\"template\" id=\"ship5\" draggable=\"true\" ondragstart=\"drag(event, 5)\"></div><div class=\"template\" id=\"ship4\" draggable=\"true\" ondragstart=\"drag(event, 4)\"></div><div class=\"template\" id=\"ship31\" draggable=\"true\" ondragstart=\"drag(event, 3)\"></div><div class=\"template\" id=\"ship32\" draggable=\"true\" ondragstart=\"drag(event, 3)\"></div><div class=\"template\" id=\"ship2\" draggable=\"true\" ondragstart=\"drag(event, 2)\"></div>";
-  body.appendChild(choices);
+  menuwrapper.appendChild(choices);
   let menu = document.createElement("div");
   menu.id = "menu";
   menu.innerHTML = "<input type=\"radio\" id=\"vertical\" name=\"orientation\" value=\"v\" checked=\"checked\"><label for=\"vertical\">Vertical</label><input type=\"radio\" id=\"horizontal\" name=\"orientation\" value=\"h\"><label for=\"horizontal\">Horizontal</label><button id=\"start\" onclick=\"startButton()\">Start</button>";
-  body.appendChild(menu);
+  menuwrapper.appendChild(menu);
   player = new Player(false, computerBoard);
   computer = new Player(true, playerBoard);
   playerBoard.render("playerboard");
@@ -448,8 +455,10 @@ function startButton() {
   if (document.querySelectorAll(".template").length < 1) {
     started = true;
     let menu = document.getElementById("menu");
-    let container = document.querySelector("body");
+    let choices = document.getElementById("choices");
+    let container = document.getElementById("menuwrapper");
     container.removeChild(menu);
+    container.removeChild(choices);
   }
 }
 

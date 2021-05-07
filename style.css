@@ -1,18 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Girassol&display=swap');
+
 * {
-    margin: auto;
-    outline: none;
-  }
+  margin: auto;
+  outline: none;
+  font-family: Girassol, Arial, sans-serif;
+}
   
-  #playerboard, #computerboard {
-    margin-left: 50px; 
-    display: inline-grid;
-    width: 30em;
-    height: 30em;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    border: 1px solid lightgray;
-    margin-top: 100px;
-  }
+#container {
+  display: flex;
+  justify-content: center;
+}
+
+#playerboard, #computerboard {
+  display: inline-grid;
+  width: 30em;
+  height: 30em;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  margin-top: 100px;
+}
 
 .tile {
   width: 100%;
@@ -37,11 +43,12 @@
 .tile {
   background: url(./texture.png);
   background-size: cover;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease-in-out;
 }
 
 #computerboard .tile:hover {
-  background: lightgray;
+  background: url(./aim.png);
+  background-size: cover;
 }
 
 #ship5 {
@@ -75,4 +82,58 @@
 .template {
   display: inline-block;
   margin-left: 50px;
+}
+
+.duo {
+  display: inline-block;
+  background-color:#a85502;
+  padding: 0em 3em 3em 3em;
+  border-radius: 10px;
+}
+
+.duo h1 {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 2.5em;
+  color: white;
+}
+
+#choices, #menu {
+  background-color: rgb(238, 238, 238);
+  width: 35em;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  border-radius: 15px;
+  padding: 1em;
+  box-shadow: gray 0px 0px 15px;
+}
+
+#menu {
+  display: flex;
+}
+
+#menuwrapper {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  border: none;
+  padding: 1.5em;
+  font-size: 1em;
+  border-radius: 15px;
+  background-color: #a85502;
+  color: white;
+  margin: 1em;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #a05307;
+  cursor: pointer;
+}
+
+body {
+  background: rgb(233, 233, 233);
 }
