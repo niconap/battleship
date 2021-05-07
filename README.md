@@ -1,4 +1,4 @@
-### Battleship
+## Battleship
 
 This project is a battleship game that let's you play against a computer.
 
