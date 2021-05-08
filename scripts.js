@@ -130,51 +130,37 @@ function Gameboard() {
 
       // Check if the x and y are occupied by a ship, if yes: give the
       // tile a ship class
-      if (this.ships.length > 0) {
-        this.ships.forEach(ship => {
-          if (ship.or == "v") {
-            if (ship.x == x) {
-              if (ship.y.indexOf(y) >= 0) {
-                box.classList.add("ship");
-                isShip = true;
-                if (name == "playerboard") {
-                  let index = 0;
-                  ship.ship.hitArray.forEach(element => {
-                    if (element && ship.y[index] == y) {
-                      box.classList.add("hit");
-                    }
-                    index++;
-                  })
+      this.ships.forEach(ship => {
+        if (ship.or == "v") {
+          if (ship.x == x && ship.y.indexOf(y) >= 0) {
+              box.classList.add("ship");
+              isShip = true;
+              let index = 0;
+              ship.ship.hitArray.forEach(element => {
+                if (element && ship.y[index] == y && name == "playerboard") {
+                  box.classList.add("hit");
                 }
-              } else {
-                return;
-              }
-            } else {
-              return;
-            }
-          } else if (ship.or == "h") {
-            if (ship.y == y) {
-              if (ship.x.indexOf(x) >= 0) {
-                box.classList.add("ship");
-                isShip = true;
-                if (name == "playerboard") {
-                  let index = 0;
-                  ship.ship.hitArray.forEach(element => {
-                    if (element && ship.x[index] == x) {
-                      box.classList.add("hit");
-                    }
-                    index++;
-                  })
-                }
-              } else {
-                return;
-              }
-            } else {
-              return;
-            }
+                index++;
+              })
+          } else {
+            return;
           }
-        });
-      }
+        } else if (ship.or == "h") {
+          if (ship.y == y && ship.x.indexOf(x) >= 0) {
+            box.classList.add("ship");
+            isShip = true;
+            let index = 0;
+            ship.ship.hitArray.forEach(element => {
+              if (element && ship.x[index] == x && name == "playerboard") {
+                box.classList.add("hit");
+              }                    
+              index++;
+            })
+          } else {
+            return;
+          }
+        }
+      });
 
       // Check if the tile has been missed and if it's been hit
       if (name == "playerboard") {
