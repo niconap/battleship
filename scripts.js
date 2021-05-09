@@ -336,6 +336,7 @@ let gameover;
 function initialize() {
   started = false;
   gameover = false;
+  current = true;
   playerBoard = new Gameboard();
   computerBoard = new Gameboard();
   let menuwrapper = document.getElementById("menuwrapper");
